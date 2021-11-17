@@ -1,16 +1,21 @@
 <?php
 namespace MyProject\Controllers;
+use Vendor\Controllers\ParentController;
 
-class MainController
-{
+class MainController extends ParentController
+{   
     public function main()
     {
-        echo 'Главная страница';
+        $articles = [
+            ['name' => 'Статья 1', 'text' => 'Текст статьи 1'],
+            ['name' => 'Статья 2', 'text' => 'Текст статьи 2'],
+        ];
+        $this->view->renderHtml('main.php', ['articles' => $articles]);
     }
 
     public function sayHello(string $name)
     {
-        echo 'Привет, ' . $name;
+        $this->view->renderHtml('hello.php', ['name' => $name]);
     }
 
     public function sayBye(string $name)
