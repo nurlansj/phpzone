@@ -17,7 +17,6 @@ class MainController extends ParentController
     {
         $this->view->renderHtml('hello.php', ['name' => $name]);
     }
-
     public function sayBye(string $name)
     {
         $this->view->renderHtml('bye.php', ['name' => $name]);
