@@ -20,6 +20,6 @@ class MainController extends ParentController
 
     public function sayBye(string $name)
     {
-        echo 'Пока, ' . $name;
+        $this->view->renderHtml('bye.php', ['name' => $name]);
     }
 }

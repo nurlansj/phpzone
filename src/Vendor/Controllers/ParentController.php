@@ -1,6 +1,6 @@
 <?php
 namespace Vendor\Controllers;
-use MyProject\View\View;
+use Vendor\View\View;
 
 abstract class ParentController
 {

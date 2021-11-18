@@ -1,5 +1,5 @@
 <?php
-namespace MyProject\View;
+namespace Vendor\View;
 
 class View
 {
