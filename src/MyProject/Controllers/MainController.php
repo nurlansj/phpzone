@@ -12,7 +12,7 @@ class MainController extends ParentController
         ];
         $this->view->renderHtml('main.php', ['articles' => $articles]);
     }
-    public function sayHello(string $name1)
+    public function sayHello(string $name12)
     {
         $this->view->renderHtml('hello.php', ['name' => $name]);
     }
