@@ -2,7 +2,8 @@
 namespace MyProject\Controllers;
 use Vendor\Controllers\ParentController;
 use Vendor\Controllers\ParentController;
-
+use Vendor\Controllers\ParentController;
+use Vendor\Controllers\ParentController;
 
 class MainController extends ParentController
 {   
