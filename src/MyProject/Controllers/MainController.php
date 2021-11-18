@@ -1,9 +1,12 @@
 <?php
 namespace MyProject\Controllers;
 use Vendor\Controllers\ParentController;
+use Vendor\Controllers\ParentController;
+
 
 class MainController extends ParentController
 {   
+
     public function main()
     {
         $articles = [
@@ -12,7 +15,7 @@ class MainController extends ParentController
         ];
         $this->view->renderHtml('main.php', ['articles' => $articles]);
     }
-    public function sayHello(string $name12)
+    public function sayHello(string $name)
     {
         $this->view->renderHtml('hello.php', ['name' => $name]);
     }
