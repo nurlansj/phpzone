@@ -1,5 +1,5 @@
 <?php
-namespace MyProject\Services;
+namespace Vendor\Services;
 
 class Db
 {
