@@ -14,8 +14,7 @@ class MainController extends ParentController
     }
     public function main()
     {
-        $articles = $this->db->query('SELECT * FROM `articles`;', [], Article::class);
-        // var_dump($articles); return;
+        $articles = Article::findAll();
         $this->view->renderHtml('main.php', ['articles' => $articles]);
     }
     public function sayHello(string $name)
