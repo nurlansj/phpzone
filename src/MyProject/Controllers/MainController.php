@@ -1,5 +1,7 @@
 <?php
 namespace MyProject\Controllers;
+
+use MyProject\Models\Articles\Article;
 use Vendor\Controllers\ParentController;
 use Vendor\Services\Db;
 
@@ -12,7 +14,8 @@ class MainController extends ParentController
     }
     public function main()
     {
-        $articles = $this->db->query('SELECT * FROM `articles`;');
+        $articles = $this->db->query('SELECT * FROM `articles`;', [], Article::class);
+        // var_dump($articles); return;
         $this->view->renderHtml('main.php', ['articles' => $articles]);
     }
     public function sayHello(string $name)

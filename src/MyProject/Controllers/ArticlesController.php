@@ -16,12 +16,13 @@ class ArticlesController extends ParentController
             $this->view->renderHtml('/../errors/404.php', [], 404);
             return;
         }
+        print_r($result); die();
         $author = $this->db->query('SELECT * FROM `users` WHERE id = :author_id;', [':author_id' => $result[0]['author_id']]);
         if ($author === []) {
             $this->view->renderHtml('/../errors/404.php', [], 404);
             return;
         }
-        // print_r($result); die();
+         print_r($result); die();
         $this->view->renderHtml('view.php', ['article' => $result[0], 'author' => $author[0]]);
     }
 }
