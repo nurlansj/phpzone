@@ -5,6 +5,7 @@ use Vendor\Controllers\ParentController;
 
 class MainController extends ParentController
 {
+    // test-commit
     public function main()
     {
         $articles = [
