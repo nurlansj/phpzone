@@ -7,11 +7,6 @@ use Vendor\Services\Db;
 
 class MainController extends ParentController
 {   
-    private $db;
-    public function __construct() {
-        parent::__construct();
-        $this->db = new Db();
-    }
     public function main()
     {
         $articles = Article::findAll();

@@ -3,8 +3,8 @@ namespace Vendor\Services;
 
 class Db
 {
-    private $pdo;
-    public function __construct() {
+    private static $instance;
+    private function __construct() {
         $dbOptions = (require __DIR__ . '/../../settings.php')['db'];
         $this->pdo = new \PDO(
             'mysql:host=' . $dbOptions['host'] . ';dbname=' . $dbOptions['dbname'],
@@ -14,6 +14,12 @@ class Db
         $this->pdo->exec('SET NAMES UTF8');
     }
 
+    public static function getInstance(): self {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
     public function query(string $sql, array $params = [], string $className = 'stdClass'): ?array {
         $sth = $this->pdo->prepare($sql);
         $result = $sth->execute($params);
