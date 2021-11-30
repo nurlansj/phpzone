@@ -4,6 +4,9 @@ namespace Vendor\Services;
 class Db
 {
     private static $instance;
+
+    /** @var \PDO */
+    private $pdo;
     private function __construct() {
         $dbOptions = (require __DIR__ . '/../../settings.php')['db'];
         $this->pdo = new \PDO(
