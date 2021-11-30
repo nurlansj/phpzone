@@ -1,22 +1,19 @@
 <?php
 namespace MyProject\Models\Articles;
+
 use MyProject\Models\Users\User;
-class Article
+use Vendor\Models\ActiveRecordEntity;
+
+class Article extends ActiveRecordEntity
 {
-    private $title;
-    private $text;
-    private $author;
+    protected $name;
+    protected $text;
+    protected $authorId;
+    protected $createdAt;
 
-    public function __construct(string $title, string $text, User $author)
+    public function getName(): string
     {
-        $this->title = $title;
-        $this->text = $text;
-        $this->author = $author;
-    }
-
-    public function getTitle(): string
-    {
-        return $this->title;
+        return $this->name;
     }
 
     public function getText(): string
@@ -26,6 +23,10 @@ class Article
 
     public function getAuthor(): User
     {
-        return $this->author;
+        return User::getById($this->authorId);
+    }
+
+    protected static function getTableName(): string {
+        return 'articles';
     }
 }

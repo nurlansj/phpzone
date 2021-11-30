@@ -3,7 +3,7 @@ namespace Vendor\Models;
 
 use Vendor\Services\Db;
 
-abstract class AciveRecordEntity
+abstract class ActiveRecordEntity
 {
     protected $id;
     public function getId(): int {
@@ -13,12 +13,18 @@ abstract class AciveRecordEntity
         $camelCaseName = $this->underscoreToCamelCase($name);
         $this->$camelCaseName = $value;
     }
-    public function findAll(): array {
+    public static function findAll(): array {
         $db = Db::getInstance();
         return $db->query('SELECT * FROM `' . static::getTableName() . '`;', [], static::class);
     }
-    public function getById(): self {
-        
+    public static function getById(int $articleId): ?self {
+        $db = Db::getInstance();
+        $entities = $db->query(
+            'SELECT * FROM `' . static::getTableName() . '` where id=:id;', 
+            [':id' => $articleId], 
+            static::class
+        );
+        return $entities ? $entities[0] : null;
     }
     private function underscoreToCamelCase($source) {
         return lcfirst(str_replace('_', '', ucwords($source, '_')));
