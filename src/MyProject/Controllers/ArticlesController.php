@@ -25,10 +25,6 @@ class ArticlesController extends ParentController
         $article->setName('Новое название статьи');
         $article->setText('Новый текст статьи');
 
-        var_dump($article);
-    }
-
-    private function camelCaseToUnderscore(string $source): string {
-        return strtolower();
+        $article->save();
     }
 }
