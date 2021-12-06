@@ -85,6 +85,8 @@ abstract class ActiveRecordEntity
         $sql = 'INSERT INTO ' . static::getTableName() . ' (' . $columnsViaComma . ') VALUES (' . $paramsNamesViaComma . ');'; 
         $db = Db::getInstance();
         $db->query($sql, $params2values, static::class);
+        $this->id = $db->getLastInsertId();
+        $this->refresh();
     }
 
     private function mapPropertiesToDbFormat(): array {
@@ -97,6 +99,17 @@ abstract class ActiveRecordEntity
             $mappedProperties[$propertyNameAsUnderscore] = $this->$propertyName;
         }
         return $mappedProperties;
+    }
+
+    private function refresh(): void {
+        $objectFromDb = static::getById($this->id);
+        $reflector = new \ReflectionObject($objectFromDb);
+        $properties = $reflector->getProperties();
+        foreach ($properties as $property) {
+            $property->setAccessible(true);
+            $propertyName = $property->getName();
+            $this->$propertyName = $property->getValue($objectFromDb);
+        }
     }
 
     private function camelCaseToUnderscore(string $source): string {
