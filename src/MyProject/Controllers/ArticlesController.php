@@ -38,4 +38,13 @@ class ArticlesController extends ParentController
 
         // var_dump($article);
     }
+    public function delete($articleId): void {
+        $article = Article::getById($articleId);
+        if ($article === null) {
+            $this->view->renderHtml('/../errors/notFoundArticle.php', ['id' => $articleId], 404);
+            return;
+        }
+        $article->delete();
+        var_dump($article);
+    }
 }

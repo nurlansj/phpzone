@@ -112,6 +112,14 @@ abstract class ActiveRecordEntity
         }
     }
 
+    public function delete(): void {
+        $db = Db::getInstance();
+        $db->query(
+            'DELETE FROM `' . static::getTableName() . '` where id = :id',
+            [':id' => $this->id]
+        );
+        $this->id = null;
+    }
     private function camelCaseToUnderscore(string $source): string {
         return strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $source));
     }
