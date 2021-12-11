@@ -24,7 +24,7 @@
                 <p>sssssssssss sssssssssss</p>
                 <hr>
                 <h3>Статья 1</h3>
-                <p>sssssssssss sssssssssss</p>
+                <p>sssssssssss sssssssssss </p>
                 <hr>
             </td>
             <td class="sidebar">
