@@ -1,0 +1,32 @@
+.layout {
+    width: 100%;
+    max-width: 1024px;
+    margin: auto;
+    border-collapse: collapse;
+}
+
+.layout tr td {
+    padding: 20px;
+    border: solid 1px #000;
+    vertical-align: top;
+}
+
+.header {
+    font-size: 30px;
+}
+
+.sidebarHeader {
+    font-size: 20px;
+}
+
+.sidebar ul {
+    padding-left: 20px;
+}
+
+.footer {
+    text-align: center;
+}
+
+a, a:visited {
+    color: darkgreen;
+}

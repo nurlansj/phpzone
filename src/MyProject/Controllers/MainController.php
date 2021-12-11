@@ -5,11 +5,12 @@ class MainController
 {
     public function main()
     {
-        echo 'Главная страница';
+        include __DIR__ . '/../Templates/main/main.php';
     }
 
     public function sayHello(string $name)
     {
+        
         echo 'Привет, ' . $name;
     }
 
