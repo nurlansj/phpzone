@@ -2,19 +2,17 @@
 namespace MyProject\Controllers;
 
 use Vendor\Controllers\ParentController;
+use Vendor\Services\Db;
+use MyProject\Models\Articles\Article;
 
 class MainController extends ParentController
 {
     public function main()
     {
-        $articles = [
-            [
-                'name' => 'Название статьи 1', 'text' => 'Текст статьи 1'
-            ],
-            [
-                'name' => 'Название статьи 2', 'text' => 'Текст статьи 2'
-            ]
-        ];
+        $db = Db::getInstance();
+        $articles = $db->query('select * from articles', [], Article::class);
+        // var_dump($articles);
+        // return;
         $this->view->renderHtml('main.php', ['articles' => $articles]);
     }
 
