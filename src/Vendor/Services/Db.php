@@ -7,7 +7,6 @@ class Db
     private $pdo;
     private function __construct() {
         $dbOptions = (require __DIR__ . '/../../options.php')['db'];
-        // var_dump($dbOptions); die();
         $this->pdo = new \PDO(
             'mysql:host=' . $dbOptions['host'] . ';dbname=' . $dbOptions['dbname'],
             $dbOptions['user'],
