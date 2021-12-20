@@ -22,6 +22,7 @@ class ArticlesController extends ParentController
 
         if ($article === null) {
             $this->view->renderHtml('/../errors/404.php', ['message' => 'Такой статьи не существует'], 404);
+            return;
         }
 
         $article->setName('New article name');
@@ -35,6 +36,17 @@ class ArticlesController extends ParentController
         $article->setName('New article name 4');
         $article->setText('New article text 4');
         $article->save();
+        var_dump($article);
+    }
+    public function delete($articleId): void {
+        $article = Article::getById($articleId);
+
+        if ($article === null) {
+            $this->view->renderHtml('/../errors/404.php', ['message' => 'Такой статьи не существует'], 404);
+            return;
+        }
+        
+        $article->delete();
         var_dump($article);
     }
 }
