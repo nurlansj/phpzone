@@ -4,14 +4,14 @@ namespace MyProject\Controllers;
 use Vendor\Controllers\ParentController;
 use MyProject\Models\Articles\Article;
 use MyProject\Models\Users\User;
+use MyProject\Exceptions\NotFoundException;
 
 class ArticlesController extends ParentController
 {
     public function view(int $articleId) {
         $article = Article::getById($articleId);
         if ($article === null) {
-            $this->view->renderHtml('/../errors/404.php', [], 404);
-            return;
+            throw new NotFoundException;
         }
 
         $this->view->renderHtml('view.php', ['article' => $article]);
@@ -19,8 +19,7 @@ class ArticlesController extends ParentController
     public function edit(int $articleId): void {
         $article = Article::getById($articleId);
         if ($article === null) {
-            $this->view->renderHtml('/../errors/404.php', [], 404);
-            return;
+            throw new NotFoundException;
         }
 
         $article->setName('Новое название статьи');
@@ -41,8 +40,7 @@ class ArticlesController extends ParentController
     public function delete($articleId): void {
         $article = Article::getById($articleId);
         if ($article === null) {
-            $this->view->renderHtml('/../errors/notFoundArticle.php', ['id' => $articleId], 404);
-            return;
+            throw new NotFoundException;
         }
         $article->delete();
         var_dump($article);

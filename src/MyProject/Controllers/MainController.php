@@ -3,7 +3,6 @@ namespace MyProject\Controllers;
 
 use MyProject\Models\Articles\Article;
 use Vendor\Controllers\ParentController;
-use Vendor\Services\Db;
 
 class MainController extends ParentController
 {   
