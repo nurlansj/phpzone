@@ -34,6 +34,9 @@ class User extends ActiveRecordEntity
         return $this->nickname;
     }
 
+    public static function signUp(array $userData) {
+        var_dump($userData);
+    }
     protected static function getTableName(): string
     {
         return 'users';
