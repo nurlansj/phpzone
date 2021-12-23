@@ -2,15 +2,18 @@
 <div>
     <div class="users-signup-form-block">
          <h1>Регистрация</h1>
+         <?php if (!empty($error)): ?>
+            <div style="background-color: red; padding: 5px; margin: 15px; text-align:center"><?= $error ?></div>
+        <?php endif; ?>
         <form action="/users/register" method="post">
         <div class="field">
-            <div class="label">Nickname</div><input type="text" name="nickname">
+            <div class="label">Nickname</div><input type="text" name="nickname" value="<?= $_POST['nickname'] ?? '' ?>">
         </div>
         <div class="field">
-            <div class="label">Email</div><input type="text" name="email">
+            <div class="label">Email</div><input type="text" name="email" value="<?= $_POST['email'] ?? '' ?>">
         </div>
         <div class="field">
-            <div class="label">Пароль</div><input type="password" name="password">
+            <div class="label">Пароль</div><input type="password" name="password" value="<?= $_POST['password'] ?? '' ?>">
         </div>
         <input class="submit" type="submit" value="Зарегистрироваться">
         </form>
