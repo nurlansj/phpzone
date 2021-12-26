@@ -30,9 +30,15 @@ class User extends ActiveRecordEntity
     /**
      * @return string
      */
-    public function getNickname(): string
-    {
+    public function getNickname(): string {
         return $this->nickname;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail(): string {
+        return $this->email;
     }
 
     public static function signUp(array $userData): User {
