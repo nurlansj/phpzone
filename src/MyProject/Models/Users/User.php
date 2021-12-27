@@ -41,6 +41,13 @@ class User extends ActiveRecordEntity
         return $this->email;
     }
 
+    /**
+     * @return int
+     */
+    public function getIsConfirmed(): int {
+        return (int) $this->isConfirmed;
+    }
+
     public static function signUp(array $userData): User {
         if (empty($userData['nickname'])) {
             throw new InvalidArgumentException('Не передан nickname');
@@ -76,6 +83,10 @@ class User extends ActiveRecordEntity
         $user->save();
 
         return $user;
+    }
+    public function activate(): void {
+        $this->isConfirmed = true;
+        $this->save();
     }
     protected static function getTableName(): string
     {
