@@ -7,6 +7,7 @@ use MyProject\Exceptions\InvalidArgumentException;
 use MyProject\Models\Users\UserActivationService;
 use Vendor\Services\EmailSender;
 use MyProject\Exceptions\ActivationException;
+use MyProject\Models\Users\UserAuthService;
 
 class UsersController extends ParentController 
 {
@@ -32,24 +33,30 @@ class UsersController extends ParentController
     }
     public function activate(int $userId, string $activationCode): void {
         try {
-            $user = User::getById($userId);
-            if ($user === null) {
-                throw new ActivationException('Нет такого пользователя');
-            }
-            if ($user->getIsConfirmed() == 1) {
-                throw new ActivationException('Пользователь уже активирован');
-            }
-            $isCodeValid = UserActivationService::checkActivationCode($user, $activationCode);
-            if ($isCodeValid === false) {
-                throw new ActivationException('Код активации не верен');
-            }
-            $user->activate();
-            UserActivationService::deleteActivationCode($userId);
-            $this->view->renderHtml('ActivationSuccesfull.php');
-            return;
+            $user = User::activate($userId, $activationCode);
         } catch (ActivationException $e) {
             $this->view->renderHtml('../errors/activationError.php', ['message' => $e->getMessage()]);
             return;
         }
+        $this->view->renderHtml('ActivationSuccesfull.php');
+    }
+    public function login(): void {
+        if (!empty($_POST)) {
+            try {
+                $user = User::login($_POST);
+                UserAuthService::createToken($user);
+                header('Location: /');
+                exit();
+            } catch (InvalidArgumentException $e) {
+                $this->view->renderHtml('login.php', ['error' => $e->getMessage()]);
+                return;
+            }
+        }
+
+        $this->view->renderHtml('login.php');
+    }
+    public function logOut(): void {
+        UserAuthService::deleteToken();
+        header('Location: /');
     }
 }

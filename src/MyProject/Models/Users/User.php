@@ -3,6 +3,7 @@ namespace MyProject\Models\Users;
 
 use Vendor\Models\ActiveRecordEntity;
 use MyProject\Exceptions\InvalidArgumentException;
+use MyProject\Exceptions\ActivationException;
 
 class User extends ActiveRecordEntity
 {
@@ -48,6 +49,13 @@ class User extends ActiveRecordEntity
         return (int) $this->isConfirmed;
     }
 
+    /**
+     * @return string
+     */
+    public function getAuthToken(): string {
+        return $this->authToken;
+    }
+
     public static function signUp(array $userData): User {
         if (empty($userData['nickname'])) {
             throw new InvalidArgumentException('Не передан nickname');
@@ -84,9 +92,52 @@ class User extends ActiveRecordEntity
 
         return $user;
     }
-    public function activate(): void {
+    public static function activate(int $userId, string $activationCode): self {
+        $user = static::getById($userId);
+        if ($user === null) {
+            throw new ActivationException('Нет такого пользователя');
+        }
+        if ($user->isConfirmed == 1) {
+            throw new ActivationException('Пользователь уже активирован');
+        }
+        $isCodeValid = UserActivationService::checkActivationCode($user, $activationCode);
+        if ($isCodeValid === false) {
+            throw new ActivationException('Код активации не верен');
+        }
+        $user->activateInDb();
+        UserActivationService::deleteActivationCode($userId);
+        return $user;
+    }
+    public function activateInDb(): void {
         $this->isConfirmed = true;
         $this->save();
+    }
+    public static function login(array $loginData): self {
+        if (empty($loginData['email'])) {
+            throw new InvalidArgumentException('Не передан email');
+        }
+        if (empty($loginData['password'])) {
+            throw new InvalidArgumentException('Не передан password');
+        }
+        $user = User::findOneByColumn('email', $loginData['email']);
+        if ($user === null) {
+            throw new InvalidArgumentException('Нет пользователя с таким email');
+        }
+        if (!password_verify($loginData['password'], $user->getPasswordHash())) {
+            throw new InvalidArgumentException('Неправильный пароль');
+        }
+        if (!$user->isConfirmed) {
+            throw new InvalidArgumentException('Пользователь не подтверждён');
+        }
+        $user->refreshAuthToken();
+        $user->save();
+        return $user;
+    }
+    public function getPasswordHash(): string {
+        return $this->passwordHash;
+    }
+    private function refreshAuthToken(): string {
+        return $this->authToken = sha1(random_bytes(100)) . sha1(random_bytes(100));
     }
     protected static function getTableName(): string
     {

@@ -33,4 +33,7 @@ try {
 } catch (\MyProject\Exceptions\NotFoundException $e) {
     $view = new \Vendor\View\View(__DIR__ . '/../templates/errors');
     $view->renderHtml('404.php', [], 404);
+} catch (\MyProject\Exceptions\InvalidVarException $e) {
+    $view = new \Vendor\View\View(__DIR__ . '/../templates/errors');
+    $view->renderHtml('500.php', ['error' => $e->getMessage()], 500);
 }
