@@ -92,7 +92,7 @@ class User extends ActiveRecordEntity
 
         return $user;
     }
-    public static function activate(int $userId, string $activationCode): self {
+    public static function activate(int $userId, string $activationCode): void {
         $user = static::getById($userId);
         if ($user === null) {
             throw new ActivationException('Нет такого пользователя');
@@ -106,7 +106,6 @@ class User extends ActiveRecordEntity
         }
         $user->activateInDb();
         UserActivationService::deleteActivationCode($userId);
-        return $user;
     }
     public function activateInDb(): void {
         $this->isConfirmed = true;

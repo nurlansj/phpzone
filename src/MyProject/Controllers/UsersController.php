@@ -33,7 +33,7 @@ class UsersController extends ParentController
     }
     public function activate(int $userId, string $activationCode): void {
         try {
-            $user = User::activate($userId, $activationCode);
+            User::activate($userId, $activationCode);
         } catch (ActivationException $e) {
             $this->view->renderHtml('../errors/activationError.php', ['message' => $e->getMessage()]);
             return;

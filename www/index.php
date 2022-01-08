@@ -36,4 +36,7 @@ try {
 } catch (\MyProject\Exceptions\InvalidVarException $e) {
     $view = new \Vendor\View\View(__DIR__ . '/../templates/errors');
     $view->renderHtml('500.php', ['error' => $e->getMessage()], 500);
+} catch (\MyProject\Exceptions\UnAuthorizedException $e) {
+    $view = new \Vendor\View\View(__DIR__ . '/../templates/errors');
+    $view->renderHtml('401.php', ['error' => $e->getMessage()], 401); 
 }
