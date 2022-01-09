@@ -29,6 +29,5 @@ abstract class ParentController
         // $this->view = new View(__DIR__ . '/../../../templates/' . $viewFolder);
         
         $this->view->setVar('user', $this->user);
-        $this->view->setVar('use', 'use');
     }
 }

@@ -7,6 +7,7 @@ use MyProject\Models\Users\User;
 use MyProject\Exceptions\NotFoundException;
 use MyProject\Exceptions\UnAuthorizedException;
 use MyProject\Exceptions\InvalidArgumentException;
+use MyProject\Exceptions\Forbidden;
 
 class ArticlesController extends ParentController
 {
@@ -40,6 +41,9 @@ class ArticlesController extends ParentController
         // var_dump($article);
         if ($this->user === null) {
             throw new UnAuthorizedException();
+        }
+        if ($this->user->isAdmin() === false) {
+            throw new Forbidden('Для добавления статьи нужно обладать правами администратора');
         }
         if (!empty($_POST)) {
             try {
