@@ -96,10 +96,9 @@ class User extends ActiveRecordEntity
         $user->role = 'user';
         $user->authToken = sha1(random_bytes(100)) . sha1(random_bytes(100));
         $user->save();
-
         return $user;
     }
-    public static function activate(int $userId, string $activationCode): void {
+    public static function activate(int $userId, string $activationCode): User {
         $user = static::getById($userId);
         if ($user === null) {
             throw new ActivationException('Нет такого пользователя');
@@ -111,12 +110,9 @@ class User extends ActiveRecordEntity
         if ($isCodeValid === false) {
             throw new ActivationException('Код активации не верен');
         }
-        $user->activateInDb();
-        UserActivationService::deleteActivationCode($userId);
-    }
-    public function activateInDb(): void {
-        $this->isConfirmed = true;
-        $this->save();
+        $user->isConfirmed = true;
+        $user->save();
+        return $user;
     }
     public static function login(array $loginData): self {
         if (empty($loginData['email'])) {

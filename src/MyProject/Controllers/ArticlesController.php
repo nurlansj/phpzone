@@ -3,20 +3,18 @@ namespace MyProject\Controllers;
 
 use Vendor\Controllers\ParentController;
 use MyProject\Models\Articles\Article;
-use MyProject\Models\Users\User;
 use MyProject\Exceptions\NotFoundException;
 use MyProject\Exceptions\UnAuthorizedException;
-use MyProject\Exceptions\InvalidArgumentException;
 use MyProject\Exceptions\Forbidden;
+use MyProject\Exceptions\InvalidArgumentException;
 
 class ArticlesController extends ParentController
 {
-    public function view(int $articleId) {
+    public function view(int $articleId): void {
         $article = Article::getById($articleId);
         if ($article === null) {
             throw new NotFoundException;
         }
-
         $this->view->renderHtml('view.php', ['article' => $article]);
     }
     public function edit(int $articleId): void {
@@ -24,23 +22,13 @@ class ArticlesController extends ParentController
         if ($article === null) {
             throw new NotFoundException;
         }
-
         $article->setName('Новое название статьи');
         $article->setText('Новый текст статьи');
-
         $article->save();
     }
     public function add(): void {
-        // $author = User::getById(1);
-        // $article = new Article();
-        // $article->setAuthor($author);
-        // $article->setName('Новое название статьи');
-        // $article->setText('Новый текст статьи');
-        // $article->save();
-
-        // var_dump($article);
         if ($this->user === null) {
-            throw new UnAuthorizedException();
+            throw new UnAuthorizedException;
         }
         if ($this->user->isAdmin() === false) {
             throw new Forbidden('Для добавления статьи нужно обладать правами администратора');
@@ -57,12 +45,12 @@ class ArticlesController extends ParentController
         }
         $this->view->renderHtml('add.php');
     }
-    public function delete($articleId): void {
+    public function delete(int $articleId): void {
         $article = Article::getById($articleId);
         if ($article === null) {
             throw new NotFoundException;
         }
         $article->delete();
-        var_dump($article);
+        $this->view->renderHtml('deletionSuccessfull.php', ['article' => $article]);
     }
 }

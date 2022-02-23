@@ -11,7 +11,7 @@ use MyProject\Models\Users\UserAuthService;
 
 class UsersController extends ParentController 
 {
-    public function signUp() {
+    public function signUp(): void {
         if (!empty($_POST)) {
             try {
                 $user = User::signUp($_POST);
@@ -25,7 +25,7 @@ class UsersController extends ParentController
                     'userId' => $user->getId(),
                     'code' => $code
                 ]);
-                $this->view->renderHtml('signUpSuccesfull.php');
+                $this->view->renderHtml('signUpSuccessfull.php');
                 return;
             }           
         }
@@ -33,12 +33,16 @@ class UsersController extends ParentController
     }
     public function activate(int $userId, string $activationCode): void {
         try {
-            User::activate($userId, $activationCode);
+            $user = User::activate($userId, $activationCode);
         } catch (ActivationException $e) {
             $this->view->renderHtml('../errors/activationError.php', ['message' => $e->getMessage()]);
             return;
         }
-        $this->view->renderHtml('ActivationSuccesfull.php');
+        if ($user instanceof User) {
+            UserActivationService::deleteActivationCode($user);
+            $this->view->renderHtml('activationSuccessfull.php');
+            return;
+        }  
     }
     public function login(): void {
         if (!empty($_POST)) {
@@ -52,11 +56,11 @@ class UsersController extends ParentController
                 return;
             }
         }
-
         $this->view->renderHtml('login.php');
     }
     public function logOut(): void {
         UserAuthService::deleteToken();
         header('Location: /');
+        exit();
     }
 }
